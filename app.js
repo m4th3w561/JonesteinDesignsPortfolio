@@ -80,7 +80,7 @@ const animationInterval = setInterval(() => {
     object4[0],
     object4[1]
   );
-}, 10);
+}, 20);
 
 //code to figure out screen size
 
@@ -200,20 +200,47 @@ function createLine(parent, name, x1, y1, x2, y2) {
   parentElement.append(newLine);
 }
 
-const photoApp = document.getElementById('photoApp')
-const portfolioProject = document.getElementById('portfolio-site')
 
-const t5 = gsap.timeline({ defaults: { duration: 1, ease: "power1.out" } });
+
+
+// animations 
+const portfolioProject = document.querySelector("#portfolio-site");
+const photoApp = document.querySelector('#photoApp')
+
+const photoAppFlipper = document.querySelector("#firstFlipper");
+const portfolioProjectFlipper = document.querySelector("#secondFlipper");
+
+const t11 = gsap.timeline({ defaults: { duration: 1, ease: "power1.out" } });
+
+const t10 = gsap.timeline({ defaults: { duration: 1, ease: "power1.out" } });
+
+
+photoAppFlipper.addEventListener("mouseover", () => {
+    console.log("called photo");
+    t10.to("#firstFlipper", 1, { rotationY: 360, repeat: 1 });
+});
+
+portfolioProjectFlipper.addEventListener("mouseover", () => {
+    console.log("called project");
+    t11.to("#secondFlipper", 1, { rotationY: 360, repeat: 1 });
+});
+
+photoAppFlipper.addEventListener("click", () => {
+    t10.restart();
+    t10.pause();
+    t5.to("#firstFlipper", { scale: 1000, zIndex: 100 });
+    // after play load next page
+    //function to load next page
+});
+
+
+const t7 = gsap.timeline({defaults: {duration:1, ease: "power1.out"}})
+
+const t5 = gsap.timeline({ defaults: { duration: 4, ease: "power1.out" } });
+
 const t6 = gsap.timeline({ defaults: { duration: 1, ease: "power1.out" } });
 
 
-photoApp.addEventListener("click", ()=> {
-    t5.fromTo("#photoApp", { scale: 1 }, { scale: 100, zIndex: 100, transition: "none"  });
-});
-portfolioProject.addEventListener("click", ()=> {
-    t6.fromTo(
-      "#portfolio-site",
-      { scale: 1 },
-      { scale: 1000, zIndex: 100, transition: "none" }
-    );
-})
+
+
+
