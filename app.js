@@ -8,6 +8,38 @@ const circle2loc = returnLocation("circle2");
 const circle3loc = returnLocation("circle3");
 const circle4loc = returnLocation("circle4");
 
+function returnLocation(id, containerXOffset, containerYOffset) {
+  var d = document.getElementById(id);
+  let rect = d.getBoundingClientRect();
+  const width = rect.right - rect.left;
+  const height = rect.bottom - rect.top;
+  let xPos, yPos;
+  xPos = rect.left + width / 2;
+  yPos = rect.top + height / 2;
+
+  if (containerYOffset) {
+    yPos -= containerYOffset;
+  }
+  if (containerXOffset) {
+    xPos -= containerXOffset;
+  }
+  // console.log(`xpos ${xPos.toFixed(1)}, ypos ${yPos.toFixed(1)}`);
+  let topOffset = rect.top;
+  return [xPos, yPos, width, height, rect.left, rect.top];
+}
+
+function createLine(parent, name, x1, y1, x2, y2) {
+  var newLine = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "polyline"
+  );
+  newLine.setAttribute("points", `${x1} ${y1} ${x2} ${y2}`);
+  newLine.setAttribute("id", name);
+  newLine.setAttribute("stroke", "red ");
+  var parentElement = document.getElementById(parent);
+  parentElement.append(newLine);
+}
+
 // create interval code that is always running and drawing line 1
 const animationInterval = setInterval(() => {
   document.getElementById("line1svg").innerHTML = "";
@@ -30,57 +62,14 @@ const animationInterval = setInterval(() => {
   //offset all line centers
 
   // draw line between them
-  createLine(
-    "line1svg",
-    "line1",
-    object1[0],
-    object1[1],
-    object2[0],
-    object2[1]
-  );
-  // console.log(`object 1 ${object1}\nobject 2  ${object2}`);
-
-  createLine(
-    "line2svg",
-    "line2",
-    object2[0],
-    object2[1],
-    object3[0],
-    object3[1]
-  );
-  createLine(
-    "line3svg",
-    "line3",
-    object3[0],
-    object3[1],
-    object1[0],
-    object1[1]
-  );
-  createLine(
-    "line4svg",
-    "line4",
-    object4[0],
-    object4[1],
-    object3[0],
-    object3[1]
-  );
-  createLine(
-    "line5svg",
-    "line5",
-    object1[0],
-    object1[1],
-    object4[0],
-    object4[1]
-  );
-  createLine(
-    "line6svg",
-    "line6",
-    object2[0],
-    object2[1],
-    object4[0],
-    object4[1]
-  );
+  createLine( "line1svg", "line1", object1[0], object1[1], object2[0], object2[1]);
+  createLine( "line2svg", "line2", object2[0], object2[1], object3[0], object3[1]);
+  createLine( "line3svg", "line3", object3[0], object3[1], object1[0], object1[1]);
+  createLine( "line4svg", "line4", object4[0], object4[1], object3[0], object3[1]);
+  createLine( "line5svg", "line5", object1[0], object1[1], object4[0], object4[1]);
+  createLine( "line6svg", "line6", object2[0], object2[1], object4[0], object4[1]);
 }, 20);
+
 
 //code to figure out screen size
 
@@ -129,7 +118,6 @@ circle3.addEventListener("click", () => {
     // stop yoyo animation
     event.target.style.zIndex = 55;
     event.target.style.borderRadius = "5px";
-
     circle2flee.play();
     circle1flee.play();
     hover3.play();
@@ -146,101 +134,72 @@ circle3.addEventListener("click", () => {
   }
 });
 
-// This is for the animation
-const t1 = gsap.timeline({ defaults: { duration: 2, ease: "power1.inOut" } });
-const t2 = gsap.timeline({
-  defaults: { duration: 1.75, ease: "power1.inOut" },
-});
+// This is for the animation for the "projects" section
+const t1 = gsap.timeline({ defaults: { duration: 2, ease: "power1.inOut" }});
+const t2 = gsap.timeline({ defaults: { duration: 1.75, ease: "power1.inOut" }});
+const t3 = gsap.timeline({defaults: {duration:1, ease: "power1.out"}})
+const t4 = gsap.timeline({ defaults: { duration: 1, ease: "power1.out" } });
 
 t1.fromTo("#circle2", { y: 0 }, { y: -40, yoyo: true, repeat: -1 });
 
 t2.fromTo("#circle1", { x: 0 }, { x: 40, yoyo: true, repeat: -1 });
 
-t1.fromTo(
-  "#circle3",
-  { x: 0, y: 0 },
-  { x: -40, y: -40, yoyo: true, repeat: -1 }
-);
+t1.fromTo( "#circle3", { x: 0, y: 0 }, { x: -40, y: -40, yoyo: true, repeat: -1 });
 
-t2.fromTo(
-  "#circle4",
-  { x: 0, y: 0 },
-  { x: 40, y: -40, yoyo: true, repeat: -1 }
-);
+t2.fromTo( "#circle4", { x: 0, y: 0 }, { x: 40, y: -40, yoyo: true, repeat: -1 });
 
-function returnLocation(id, containerXOffset, containerYOffset) {
-  var d = document.getElementById(id);
-  let rect = d.getBoundingClientRect();
-  const width = rect.right - rect.left;
-  const height = rect.bottom - rect.top;
-  let xPos, yPos;
-  xPos = rect.left + width / 2;
-  yPos = rect.top + height / 2;
+// This is the "animation for recent-project section"
+const t5 = gsap.timeline({ defaults: { duration: 2, ease: "power1.out" } });
 
-  if (containerYOffset) {
-    yPos -= containerYOffset;
-  }
-  if (containerXOffset) {
-    xPos -= containerXOffset;
-  }
-  // console.log(`xpos ${xPos.toFixed(1)}, ypos ${yPos.toFixed(1)}`);
-  let topOffset = rect.top;
-  return [xPos, yPos, width, height, rect.left, rect.top];
-}
-
-function createLine(parent, name, x1, y1, x2, y2) {
-  var newLine = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "polyline"
-  );
-  newLine.setAttribute("points", `${x1} ${y1} ${x2} ${y2}`);
-  newLine.setAttribute("id", name);
-  newLine.setAttribute("stroke", "red ");
-  var parentElement = document.getElementById(parent);
-  parentElement.append(newLine);
-}
-
-
-
-
-// animations 
 const portfolioProject = document.querySelector("#portfolio-site");
-const photoApp = document.querySelector('#photoApp')
-
-const photoAppFlipper = document.querySelector("#firstFlipper");
+const t11 = gsap.timeline({ defaults: { duration: 2, ease: "power1.out" } });
 const portfolioProjectFlipper = document.querySelector("#secondFlipper");
-
-const t11 = gsap.timeline({ defaults: { duration: 1, ease: "power1.out" } });
-
-const t10 = gsap.timeline({ defaults: { duration: 1, ease: "power1.out" } });
-
-
-photoAppFlipper.addEventListener("mouseover", () => {
-    console.log("called photo");
-    t10.to("#firstFlipper", 1, { rotationY: 360, repeat: 1 });
-});
-
 portfolioProjectFlipper.addEventListener("mouseover", () => {
-    console.log("called project");
-    t11.to("#secondFlipper", 1, { rotationY: 360, repeat: 1 });
+  console.log("called project");
+  t11.to("#secondFlipper", { rotationY: 720 });
+});
+portfolioProjectFlipper.addEventListener("click", () => {
+  t11.restart();
+  t11.pause();
+  portfolioProjectFlipper.style.position = 'relative';
+  portfolioProjectFlipper.style.zIndex = 100
+  document.querySelector("header").style.display = "none";
+  document.querySelector("nav").style.display = "none";
+  document.querySelector("#firstFlipper").style.display = "none";
+  document.querySelector("#firstFlipperText").style.display = "none";
+  document.querySelector(".projects").style.display = "none";
+
+  t5.to("#secondFlipper", { scale: 500 });
+  t5.to("body", { height: "100vh",overflow: 'hidden'}, ">");
+  // after play load next page
+  //function to load next page
 });
 
+const photoApp = document.querySelector('#photoApp')
+const t10 = gsap.timeline({ defaults: { duration: 2, ease: "power1.out" } });
+const photoAppFlipper = document.querySelector("#firstFlipper");
+photoAppFlipper.addEventListener("mouseover", () => {
+  console.log("called photo");
+  t10.to("#firstFlipper", { rotationY: 720 });
+});
 photoAppFlipper.addEventListener("click", () => {
-    t10.restart();
-    t10.pause();
-    t5.to("#firstFlipper", { scale: 1000, zIndex: 100 });
-    // after play load next page
-    //function to load next page
+  t10.restart();
+  t10.pause();
+  photoAppFlipper.style.position = 'relative';
+  photoAppFlipper.style.zIndex = 100
+  document.querySelector("header").style.display = "none";
+  document.querySelector("nav").style.display = "none";
+  document.querySelector("#secondFlipper").style.display = "none";
+  document.querySelector("#secondFlipperText").style.display = "none";
+  document.querySelector(".projects").style.display = "none";
+
+  t5.to("#firstFlipper", { scale: 500 });
+  t5.to("body", { height: "100vh",overflow: 'hidden'}, ">");
+  // after play load next page
+  //function to load next page
 });
 
-
-const t7 = gsap.timeline({defaults: {duration:1, ease: "power1.out"}})
-
-const t5 = gsap.timeline({ defaults: { duration: 4, ease: "power1.out" } });
-
-const t6 = gsap.timeline({ defaults: { duration: 1, ease: "power1.out" } });
-
-
-
+const t6 = gsap.timeline({ defaults: { duration: 0.0001, ease: "power1.inOut" }});
+t6.fromTo("#line1", {opacity: 0}, {opacity: 1, repeat: -1 });
 
 
