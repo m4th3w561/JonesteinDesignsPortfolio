@@ -61,7 +61,15 @@ nav {
     justify-content: center;
     border-radius: 0.8rem;
 }
-
+a {
+    text-decoration: none;
+}
+a:visited {
+    color: black
+}
+a:hover {
+    color: var(--medium-blue)
+}
 .logo {
     padding: 0.5rem;
     height: 3.5rem;
