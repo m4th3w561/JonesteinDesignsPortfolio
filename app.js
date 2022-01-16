@@ -8,6 +8,8 @@ const circle2loc = returnLocation("circle2");
 const circle3loc = returnLocation("circle3");
 const circle4loc = returnLocation("circle4");
 
+
+
 function returnLocation(id, containerXOffset, containerYOffset) {
   var d = document.getElementById(id);
   let rect = d.getBoundingClientRect();
@@ -28,20 +30,30 @@ function returnLocation(id, containerXOffset, containerYOffset) {
   return [xPos, yPos, width, height, rect.left, rect.top];
 }
 
-function createLine(parent, name, x1, y1, x2, y2) {
+  //set iterator counter
+  let counter = 0
+  //set variable for number of times to go from starting back to starting
+  let opacityTime = 100
+
+  let lineOpacityOffsetArray = [Math.random()*opacityTime,Math.random()*opacityTime,Math.random()*opacityTime,Math.random()*opacityTime,Math.random()*opacityTime,Math.random()*opacityTime]
+  let lineOpacityArray = [0,0,0,0,0,0]
+
+function createLine(parent, name, x1, y1, x2, y2,opacity) {
   var newLine = document.createElementNS(
     "http://www.w3.org/2000/svg",
     "polyline"
   );
   newLine.setAttribute("points", `${x1} ${y1} ${x2} ${y2}`);
   newLine.setAttribute("id", name);
-  newLine.setAttribute("stroke", "red ");
+  newLine.setAttribute("stroke", "red");
+  newLine.setAttribute("opacity",opacity)
   var parentElement = document.getElementById(parent);
   parentElement.append(newLine);
 }
 
 // create interval code that is always running and drawing line 1
 const animationInterval = setInterval(() => {
+
   document.getElementById("line1svg").innerHTML = "";
   document.getElementById("line2svg").innerHTML = "";
   document.getElementById("line3svg").innerHTML = "";
@@ -59,15 +71,30 @@ const animationInterval = setInterval(() => {
   const object3 = returnLocation("circle3", containerXOffset, containerYOffset);
   const object4 = returnLocation("circle4", containerXOffset, containerYOffset);
 
-  //offset all line centers
+  //set new opacities
+  
 
   // draw line between them
-  createLine( "line1svg", "line1", object1[0], object1[1], object2[0], object2[1]);
-  createLine( "line2svg", "line2", object2[0], object2[1], object3[0], object3[1]);
-  createLine( "line3svg", "line3", object3[0], object3[1], object1[0], object1[1]);
-  createLine( "line4svg", "line4", object4[0], object4[1], object3[0], object3[1]);
-  createLine( "line5svg", "line5", object1[0], object1[1], object4[0], object4[1]);
-  createLine( "line6svg", "line6", object2[0], object2[1], object4[0], object4[1]);
+  createLine( "line1svg", "line1", object1[0], object1[1], object2[0], object2[1], lineOpacityArray[0]);
+  createLine( "line2svg", "line2", object2[0], object2[1], object3[0], object3[1], lineOpacityArray[1]);
+  createLine( "line3svg", "line3", object3[0], object3[1], object1[0], object1[1], lineOpacityArray[2]);
+  createLine( "line4svg", "line4", object4[0], object4[1], object3[0], object3[1], lineOpacityArray[3]);
+  createLine( "line5svg", "line5", object1[0], object1[1], object4[0], object4[1], lineOpacityArray[4]);
+  createLine( "line6svg", "line6", object2[0], object2[1], object4[0], object4[1], lineOpacityArray[5]);
+  
+  const updateOpacity= (lineOpacityArray)=>{
+   let newArray = lineOpacityArray.map((opacity,index)=>{
+    let newOpacity
+    let opacityOffset = lineOpacityOffsetArray[index]
+      newOpacity = 0.5+(Math.cos(((opacityOffset+counter)/opacityTime)*2*Math.PI))/3
+      
+    return newOpacity.toFixed(3)
+   })
+   counter +=1
+   return newArray
+  } 
+  lineOpacityArray = updateOpacity(lineOpacityArray)
+  console.log(lineOpacityArray)
 }, 20);
 
 
@@ -173,6 +200,8 @@ portfolioProjectFlipper.addEventListener("click", () => {
   t5.to("body", { height: "100vh",overflow: 'hidden'}, ">");
   // after play load next page
   //function to load next page
+  setTimeout(function(){window.location.href = "./jonestein-design-portfolio.html"},1500)
+  
 });
 
 const photoApp = document.querySelector('#photoApp')
@@ -197,9 +226,13 @@ photoAppFlipper.addEventListener("click", () => {
   t5.to("body", { height: "100vh",overflow: 'hidden'}, ">");
   // after play load next page
   //function to load next page
+  setTimeout(function(){window.location.href = "./photo-app.html"},1500)
 });
 
 const t6 = gsap.timeline({ defaults: { duration: 0.0001, ease: "power1.inOut" }});
 t6.fromTo("#line1", {opacity: 0}, {opacity: 1, repeat: -1 });
 
-
+const body = document.querySelector('body')
+window.onload = () => {
+  body.style.overflow = "visible"
+}
