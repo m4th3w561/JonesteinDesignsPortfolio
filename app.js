@@ -226,7 +226,7 @@ photoAppFlipper.addEventListener("click", () => {
   t5.to("body", { height: "100vh",overflow: 'hidden'}, ">");
   // after play load next page
   //function to load next page
-  setTimeout(function(){window.location.href = "./photo-app.html"},1500)
+  setTimeout(function(){window.location.href = "./photoapp/photo-app.html"},1500)
 });
 
 const t6 = gsap.timeline({ defaults: { duration: 0.0001, ease: "power1.inOut" }});
