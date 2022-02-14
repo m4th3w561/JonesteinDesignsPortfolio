@@ -61,6 +61,7 @@ barba.init({
     },
     enter (data) {
       const done = this.async();
+      console.log("This is the enter function")
       let next = data.next.container;
       // let gradient = getGradient(data.next.namespace);
       enterAnimation(next, done);
@@ -68,3 +69,8 @@ barba.init({
   }]
 });
 
+const home = document.querySelector("#home")
+
+home.addEventListener("click", () => {
+  barba.force( "/")
+})

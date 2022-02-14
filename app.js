@@ -94,7 +94,7 @@ const animationInterval = setInterval(() => {
    return newArray
   } 
   lineOpacityArray = updateOpacity(lineOpacityArray)
-  console.log(lineOpacityArray)
+  // console.log(lineOpacityArray)
 }, 20);
 
 
@@ -140,19 +140,22 @@ let circle1flee = gsap.to(circle1, {
   ease: "power1.inOut",
 });
 
-circle3.addEventListener("click", () => {
+circle3.addEventListener("click", (event) => {
   if (!circle3.style.transform.includes("scale")) {
     // stop yoyo animation
-    event.target.style.zIndex = 55;
+    event.target.style.position = 'fixed';
+    event.target.style.zIndex = 7;
     event.target.style.borderRadius = "5px";
+    event.target.style.filter = 'drop-shadow(4px 4px 0.5rem rgba(65, 65, 65, 0.7))'
     circle2flee.play();
     circle1flee.play();
     hover3.play();
     t2.pause();
     t1.pause();
   } else {
-    event.target.style.zIndex = 15;
+    event.target.style.zIndex = 3;
     event.target.style.borderRadius = "50%";
+    event.target.style.filter = 'drop-shadow(2px 2px 2px rgba(65, 65, 65, 0.5))'
     hover3.reverse();
     circle1flee.reverse();
     circle2flee.reverse();
@@ -182,14 +185,14 @@ const portfolioProject = document.querySelector("#portfolio-site");
 const t11 = gsap.timeline({ defaults: { duration: 2, ease: "power1.out" } });
 const portfolioProjectFlipper = document.querySelector("#secondFlipper");
 portfolioProjectFlipper.addEventListener("mouseover", () => {
-  console.log("called project");
+  // console.log("called project");
   t11.to("#secondFlipper", { rotationY: 720 });
 });
 portfolioProjectFlipper.addEventListener("click", () => {
   t11.restart();
   t11.pause();
   portfolioProjectFlipper.style.position = 'relative';
-  portfolioProjectFlipper.style.zIndex = 100
+  portfolioProjectFlipper.style.zIndex = 6
   document.querySelector("header").style.display = "none";
   document.querySelector("nav").style.display = "none";
   document.querySelector("#firstFlipper").style.display = "none";
@@ -208,14 +211,14 @@ const photoApp = document.querySelector('#photoApp')
 const t10 = gsap.timeline({ defaults: { duration: 2, ease: "power1.out" } });
 const photoAppFlipper = document.querySelector("#firstFlipper");
 photoAppFlipper.addEventListener("mouseover", () => {
-  console.log("called photo");
+  // console.log("called photo");
   t10.to("#firstFlipper", { rotationY: 720 });
 });
 photoAppFlipper.addEventListener("click", () => {
   t10.restart();
   t10.pause();
   photoAppFlipper.style.position = 'relative';
-  photoAppFlipper.style.zIndex = 100
+  photoAppFlipper.style.zIndex = 6
   document.querySelector("header").style.display = "none";
   document.querySelector("nav").style.display = "none";
   document.querySelector("#secondFlipper").style.display = "none";
